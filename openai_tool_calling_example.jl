@@ -191,27 +191,6 @@ function main()
                 try
                     result = execute_tool_call(tool_call)
                     println("   Result: $result")
-
-                    # Add the tool call and result to the conversation
-                    push!(messages, Dict(
-                        "role" => "assistant",
-                        "content" => "",
-                        "tool_calls" => [Dict(
-                            "id" => tool_call[:id],
-                            "type" => "function",
-                            "function" => Dict(
-                                "name" => tool_call[:function][:name],
-                                "arguments" => tool_call[:function][:arguments]
-                            )
-                        )]
-                    ))
-
-                    push!(messages, Dict(
-                        "role" => "tool",
-                        "tool_call_id" => tool_call[:id],
-                        "content" => JSON3.write(result)
-                    ))
-
                 catch e
                     println("   Error executing tool: $e")
                 end
